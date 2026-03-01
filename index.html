@@ -129,6 +129,9 @@ button {
     color: white;
     cursor: pointer;
     transition: 0.4s ease;
+    margin: 10px;
+    padding: 14px 40px;
+    font-size: 1.2em;
 }
 button:hover { transform: scale(1.08); }
 
@@ -185,20 +188,45 @@ button:hover { transform: scale(1.08); }
     text-align:center; padding: 0 20px;
 }
 
-/* --- Responsive layouts --- */
+/* 🌸 Gallery */
+.gallery-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(255,240,245,0.97);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 5000;
+}
 
-/* Mobile/tablet (default) */
-.card { width: 80vw; max-width: 350px; height: 50vh; max-height: 450px; }
-h1 { font-size: 8vw; }
-.card-back { font-size: 4vw; }
-button { font-size: 4vw; padding: 3vw 8vw; }
+.gallery-content {
+    position: relative;
+    max-width: 90%;
+    text-align: center;
+}
 
-/* Desktop / Laptop */
-@media screen and (min-width: 768px) {
-    .card { width: 350px; height: 450px; }
-    h1 { font-size: 3em; } /* original desktop header size restored */
-    .card-back { font-size: 1.6em; }
-    button { font-size: 1.2em; padding: 14px 40px; }
+#gallery-image {
+    max-width: 100%;
+    max-height: 70vh;
+    border-radius: 25px;
+    box-shadow: 0 25px 60px rgba(122,30,58,0.4);
+    transition: opacity 0.4s ease;
+}
+
+.gallery-controls {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.close-gallery {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    font-size: 2em;
+    cursor: pointer;
+    color: #7a1e3a;
 }
 </style>
 </head>
@@ -221,11 +249,23 @@ button { font-size: 4vw; padding: 3vw 8vw; }
 </div>
 
 <button onclick="handleClick()">Click Me 💐</button>
+<button onclick="openGallery()">More About These Flowers 🌸</button>
+
+<!-- 🌸 Gallery -->
+<div id="gallery-overlay" class="gallery-overlay">
+    <div class="gallery-content">
+        <span class="close-gallery" onclick="closeGallery()">✕</span>
+        <img id="gallery-image" src="" alt="Flower Memory">
+        <div class="gallery-controls">
+            <button onclick="prevImage()">Previous 🌷</button>
+            <button onclick="nextImage()">Next 🌸</button>
+        </div>
+    </div>
+</div>
 
 <script>
 let clickCount=0, cardClickCount=0, cardMessageIndex=0, audio;
 
-// Card messages cycle every 2 taps
 const cardMessages=[
     "Zi Han, You light up every moment of my day 🌸",
     "Your smile is my favorite sight 💖",
@@ -248,7 +288,6 @@ const fiveClickMessages=[
     "Zi Han, You are my heart’s sweetest secret 💕"
 ];
 
-// Start overlay and music
 const overlay=document.getElementById("start-overlay");
 overlay.addEventListener("click", ()=>{
     overlay.style.display="none";
@@ -260,10 +299,9 @@ overlay.addEventListener("click", ()=>{
         const fade=setInterval(()=>{
             if(vol<0.5){ vol+=0.01; audio.volume=vol; } else clearInterval(fade);
         },100);
-    }).catch(err=>console.log("Autoplay failed:",err));
+    });
 });
 
-// Flip card
 function flipCard(){
     cardClickCount++;
     if(cardClickCount%2===0){
@@ -274,7 +312,6 @@ function flipCard(){
     spawnSparkles();
 }
 
-// Sparkles
 function spawnSparkles(){
     const card=document.getElementById("card");
     for(let i=0;i<15;i++){
@@ -289,7 +326,6 @@ function spawnSparkles(){
     }
 }
 
-// Stars
 for(let i=0;i<80;i++){
     const star=document.createElement("div");
     star.className="star";
@@ -302,7 +338,6 @@ for(let i=0;i<80;i++){
     document.body.appendChild(star);
 }
 
-// Flowers falling
 setInterval(()=>createFlower(1),1000);
 function createFlower(amount){
     for(let i=0;i<amount;i++){
@@ -316,58 +351,49 @@ function createFlower(amount){
     }
 }
 
-// Button clicks
 function handleClick(){
     clickCount++;
     createFlower(30);
-    createHearts(10);
-
-    if(clickCount%5===0){
-        showMessage(fiveClickMessages[(clickCount/5-1)%fiveClickMessages.length]);
-        burstStorm(80);
-    }
-    if(clickCount%10===0){
-        showMessage("No matter how many times you click… I fall for you all over again 💖✨");
-        burstStorm(150);
-    }
-    if(clickCount===20){
-        showMessage("Twenty clicks… and I would still enjoy every moment with you 🌹💫");
-        megaStorm();
-    }
 }
 
-// Hearts
-function createHearts(amount){
-    for(let i=0;i<amount;i++){
-        const heart=document.createElement("div");
-        heart.className="heart";
-        heart.innerHTML=["💖","💗","💘"][Math.floor(Math.random()*3)];
-        heart.style.left=Math.random()*100+"vw";
-        document.body.appendChild(heart);
-        setTimeout(()=>heart.remove(),1500);
-    }
+function openGallery(){
+    document.getElementById("gallery-overlay").style.display="flex";
+    currentImageIndex=0;
+    showImage();
 }
 
-// Storms
-function burstStorm(amount){
-    for(let i=0;i<amount;i++){
-        setTimeout(()=>createFlower(1),i*20);
-    }
-}
-function megaStorm(){
-    for(let i=0;i<400;i++){
-        setTimeout(()=>createFlower(1),i*8);
-        setTimeout(()=>createHearts(1),i*10);
-    }
+function closeGallery(){
+    document.getElementById("gallery-overlay").style.display="none";
 }
 
-// Messages
-function showMessage(text){
-    const msg=document.createElement("div");
-    msg.className="message";
-    msg.innerHTML=text;
-    document.body.appendChild(msg);
-    setTimeout(()=>msg.remove(),5000);
+const galleryImages=[
+    "flower1.png",
+    "flower2.png",
+    "flower3.png",
+    "flower4.png",
+    "flower5.png",
+    "flower6.png",
+];
+
+let currentImageIndex=0;
+
+function showImage(){
+    const img=document.getElementById("gallery-image");
+    img.style.opacity=0;
+    setTimeout(()=>{
+        img.src=galleryImages[currentImageIndex];
+        img.style.opacity=1;
+    },200);
+}
+
+function nextImage(){
+    currentImageIndex=(currentImageIndex+1)%galleryImages.length;
+    showImage();
+}
+
+function prevImage(){
+    currentImageIndex=(currentImageIndex-1+galleryImages.length)%galleryImages.length;
+    showImage();
 }
 </script>
 
