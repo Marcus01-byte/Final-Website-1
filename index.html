@@ -2,73 +2,72 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Flowers from me to you</title>
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap');
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
 
+<style>
+/* ---------------- Body ---------------- */
 body {
     margin: 0;
+    padding: 0;
     overflow-x: hidden;
-    overflow-y: auto;
     background: radial-gradient(circle at top, #fff0f5, #f8d7e3 70%);
     font-family: 'Playfair Display', serif;
     text-align: center;
-    position: relative;
     cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24"><text y="20">❤️</text></svg>') 12 12, auto;
 }
 
-/* Stars background */
-.star {
-    position: fixed;
-    width: 2px;
-    height: 2px;
-    background: white;
-    border-radius: 50%;
-    opacity: 0.8;
-    animation: twinkle linear infinite;
-}
-@keyframes twinkle {
-    0%,100% {opacity:0.3; transform: translateY(0) scale(1);}
-    50% {opacity:1; transform: translateY(-5px) scale(1.3);}
-}
-
-/* Header */
+/* ---------------- Header ---------------- */
 h1 {
-    margin-top: 40px;
+    margin: 40px 20px 20px;
     color: #7a1e3a;
     letter-spacing: 2px;
+    font-size: 2em;
     opacity: 0;
     animation: fadeIn 2s forwards;
 }
 @keyframes fadeIn {
-    0% { opacity: 0; transform: translateY(-20px); }
-    100% { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-/* Flip card container */
+/* ---------------- Flip Card ---------------- */
 .flip-container {
     perspective: 1200px;
-    margin-top: 5vh;
     display: flex;
     justify-content: center;
-    position: relative;
+    align-items: flex-start;
+    min-height: 50vh;
+    margin: 0 auto;
 }
 
-/* Card */
+.button-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    position: relative;
+    z-index: 10;
+}
+
 .card {
+    width: 80vw;
+    max-width: 350px;
+    height: 50vh;
+    max-height: 450px;
     position: relative;
     transform-style: preserve-3d;
     transition: transform 1s, box-shadow 1s;
     cursor: pointer;
+    border-radius: 30px;
     box-shadow: 0 0 30px rgba(255,140,171,0.3);
     animation: idleGlow 3s infinite alternate;
 }
 
-.card.flipped {
-    transform: rotateY(180deg);
-}
+.card.flipped { transform: rotateY(180deg); }
 
 .card-side {
     position: absolute;
@@ -76,36 +75,42 @@ h1 {
     height: 100%;
     border-radius: 30px;
     backface-visibility: hidden;
-    box-shadow: 0 25px 70px rgba(122,30,58,0.3);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 .card-front img {
     width: 100%;
     height: 100%;
-    border-radius: 30px;
     object-fit: cover;
+    border-radius: 30px;
 }
 
 .card-back {
     transform: rotateY(180deg);
     background: linear-gradient(135deg, #ffe0ec, #fff5f9);
-    display: flex;
-    align-items: center;
-    justify-content: center;
     padding: 30px;
     box-sizing: border-box;
     text-align: center;
     color: #7a1e3a;
+    font-size: 1.2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Idle glow */
+/* Idle Glow */
 @keyframes idleGlow {
     0% { box-shadow: 0 0 20px rgba(255,140,171,0.3); }
     50% { box-shadow: 0 0 40px rgba(255,140,171,0.5); }
     100% { box-shadow: 0 0 25px rgba(255,140,171,0.35); }
 }
 
-/* Sparkles */
+/* ---------------- Sparkles ---------------- */
 .sparkle {
     position: absolute;
     width: 8px;
@@ -116,27 +121,29 @@ h1 {
     opacity: 0;
     animation: sparkleAnim 1s linear forwards;
 }
+
 @keyframes sparkleAnim {
     0% {opacity:1; transform:translate(0,0) scale(0.5);}
     50% {opacity:0.8; transform:translate(var(--dx),var(--dy)) scale(1);}
     100% {opacity:0; transform:translate(var(--dx),var(--dy)) scale(0);}
 }
 
-/* Button */
+/* ---------------- Buttons ---------------- */
 button {
     border-radius: 40px;
     border: none;
     background: linear-gradient(45deg,#d6336c,#ff8fab);
     color: white;
     cursor: pointer;
-    transition: 0.4s ease;
+    transition: 0.3s ease;
     margin: 10px;
-    padding: 14px 40px;
-    font-size: 1.2em;
+    padding: 12px 30px;
+    font-size: 1em;
 }
+
 button:hover { transform: scale(1.08); }
 
-/* Falling flowers */
+/* ---------------- Falling Flowers ---------------- */
 .falling {
     position: fixed;
     top: -10%;
@@ -146,73 +153,109 @@ button:hover { transform: scale(1.08); }
     font-size: 5vw;
 }
 
-/* Floating hearts */
+@keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+
+/* ---------------- Floating Hearts ---------------- */
 .heart {
     position: fixed;
     font-size: 5vw;
     animation: floatHeart 1.5s forwards;
     opacity: 0.9;
 }
+
 @keyframes floatHeart {
     0% {transform: translateY(0) scale(0.5); opacity:0.9;}
     50% {transform: translateY(-30px) scale(1.1); opacity:1;}
     100% {transform: translateY(-60px) scale(0.7); opacity:0;}
 }
 
-/* Falling animation */
-@keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+/* ---------------- Stars ---------------- */
+.star {
+    position: fixed;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: twinkle linear infinite;
+}
 
-/* Messages */
+@keyframes twinkle {
+    0%,100% {opacity:0.3; transform: translateY(0) scale(1);}
+    50% {opacity:1; transform: translateY(-5px) scale(1.3);}
+}
+
+/* ---------------- Message Popups ---------------- */
 .message {
     position: fixed;
     top: 40%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.7);
     background: rgba(255,255,255,0.95);
-    padding: 40px 60px;
-    border-radius: 30px;
-    font-size: 1.8em;
+    padding: 30px 50px;
+    border-radius: 25px;
+    font-size: 1.5em;
     color: #7a1e3a;
     box-shadow: 0 20px 60px rgba(0,0,0,0.25);
     backdrop-filter: blur(10px);
     opacity: 0;
     animation: popMessage 0.6s forwards;
+     z-index: 10000; 
 }
+
 @keyframes popMessage { to {transform: translate(-50%, -50%) scale(1); opacity:1;} }
 
+/* ---------------- Start Overlay ---------------- */
 #start-overlay {
     position: fixed;
-    top:0; left:0; width:100%; height:100%;
+    inset: 0;
     background: rgba(255,240,245,0.95);
-    display:flex; align-items:center; justify-content:center;
-    font-size:2em; color:#7a1e3a; z-index:1000; cursor:pointer;
-    text-align:center; padding: 0 20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:2em;
+    color:#7a1e3a;
+    z-index:1000;
+    cursor:pointer;
+    padding: 0 20px;
+    text-align:center;
 }
 
-/* 🌸 Gallery */
+/* ---------------- Gallery Overlay ---------------- */
 .gallery-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(255,240,245,0.97);
+    background: rgba(255,240,245,0.98);
     display: none;
     align-items: center;
     justify-content: center;
     z-index: 5000;
+    padding: 40px 20px; /* breathing room */
 }
 
 .gallery-content {
     position: relative;
-    max-width: 90%;
+    width: 95vw;          /* almost full screen width */
+    max-width: 1100px;    /* allow much bigger desktop size */
     text-align: center;
 }
 
 #gallery-image {
-    max-width: 100%;
-    max-height: 70vh;
+    width: 100%;
+    max-height: 85vh;     /* taller image */
+    object-fit: contain;  /* keeps proportions */
     border-radius: 25px;
-    box-shadow: 0 25px 60px rgba(122,30,58,0.4);
+    box-shadow: 0 30px 80px rgba(122,30,58,0.5);
     transition: opacity 0.4s ease;
+    animation: gentleZoom 6s ease-in-out infinite alternate;
+
 }
+
+@keyframes gentleZoom {
+    from { transform: scale(1); }
+    to { transform: scale(1.05); }
+}
+
 
 .gallery-controls {
     margin-top: 20px;
@@ -228,12 +271,12 @@ button:hover { transform: scale(1.08); }
     font-size: 2em;
     cursor: pointer;
     color: #7a1e3a;
+    z-index: 10000;
 }
 </style>
 </head>
 
 <body>
-
 <div id="start-overlay">Click anywhere to open your Valentine’s surprise 💌</div>
 
 <h1>Flowers from me to you, Zi Han 💖</h1>
@@ -241,7 +284,7 @@ button:hover { transform: scale(1.08); }
 <div class="flip-container">
     <div class="card" id="card" onclick="flipCard()">
         <div class="card-side card-front">
-            <img src="my-drawing.jpeg">
+            <img src="my-drawing.jpeg" alt="Flower Drawing">
         </div>
         <div class="card-side card-back" id="card-back">
             You light up every moment of my day 🌸
@@ -249,10 +292,12 @@ button:hover { transform: scale(1.08); }
     </div>
 </div>
 
-<button onclick="handleClick()">Click Me 💐</button>
-<button onclick="openGallery()">More About These Flowers 🌸</button>
+<div class="button-container">
+    <button onclick="handleClick()">Click Me 💐</button>
+    <button onclick="openGallery()">More About These Flowers 🌸</button>
+</div>
 
-<!-- 🌸 Gallery -->
+<!-- Gallery -->
 <div id="gallery-overlay" class="gallery-overlay">
     <div class="gallery-content">
         <span class="close-gallery" onclick="closeGallery()">✕</span>
@@ -265,137 +310,218 @@ button:hover { transform: scale(1.08); }
 </div>
 
 <script>
-let clickCount=0, cardClickCount=0, cardMessageIndex=0, audio;
+let clickCount = 0;
+let cardClickCount = 0;
+let cardMessageIndex = 0;
+let audio;
+let fiveClickIndex = 0;
 
-const cardMessages=[
-    "Zi Han, You light up every moment of my day 🌸",
+// Messages
+const cardMessages = [
+    "Pookie who lights up every moment of my day 🌸",
     "Your smile is my favorite sight 💖",
     "Thinking of you makes me happy 🌷",
     "You make ordinary days feel magical ✨",
     "I hope today makes you smile 💌",
-    "Your laugh is my favorite melody 🎶",
+    "Your laugh is my favorite melody, Heartstealer 🎶"
 ];
 
-const fiveClickMessages=[
+const fiveClickMessages = [
     "Every time you smile, my world softens 🌸",
-    "Zi Han, You are my favorite thought every day 💖",
+    "My sailor girl, You are my favorite thought every day 💖",
     "Even flowers are jealous of your beauty 🌷",
     "If love had a heartbeat, it would sound like your name 💌",
     "Your laugh is my favorite melody 🎶",
-    "You make ordinary days extraordinary ✨",
+    "Little Crab Queen makes ordinary days extraordinary ✨",
     "Just thinking of you makes me smile 🌹",
-    "You are my sunshine on cloudy days ☀️",
-    "Every moment with you feels magical 💫",
+    "My sweetheart, You are my sunshine on cloudy days ☀️",
+    "Every moment with you feels magical, my clever Slytherin 💫",
     "Zi Han, You are my heart’s sweetest secret 💕"
 ];
 
-const overlay=document.getElementById("start-overlay");
-overlay.addEventListener("click", ()=>{
-    overlay.style.display="none";
-    audio=new Audio("love letters.mp3");
-    audio.loop=true;
-    audio.volume=0;
-    audio.play().then(()=>{
-        let vol=0;
-        const fade=setInterval(()=>{
-            if(vol<0.5){ vol+=0.01; audio.volume=vol; } else clearInterval(fade);
-        },100);
-    });
-});
-
-function flipCard(){
-    cardClickCount++;
-    if(cardClickCount%2===0){
-        cardMessageIndex=(cardMessageIndex+1)%cardMessages.length;
-        document.getElementById("card-back").innerHTML=cardMessages[cardMessageIndex];
-    }
-    document.getElementById("card").classList.toggle("flipped");
-    spawnSparkles();
-}
-
-function spawnSparkles(){
-    const card=document.getElementById("card");
-    for(let i=0;i<15;i++){
-        const sparkle=document.createElement("div");
-        sparkle.className="sparkle";
-        sparkle.style.left=Math.random()*card.offsetWidth+"px";
-        sparkle.style.top=Math.random()*card.offsetHeight+"px";
-        sparkle.style.setProperty("--dx",(Math.random()*40-20)+"px");
-        sparkle.style.setProperty("--dy",(Math.random()*40-20)+"px");
-        card.appendChild(sparkle);
-        setTimeout(()=>sparkle.remove(),1000);
-    }
-}
-
-for(let i=0;i<80;i++){
-    const star=document.createElement("div");
-    star.className="star";
-    star.style.left=Math.random()*100+"vw";
-    star.style.top=Math.random()*100+"vh";
-    star.style.width=(1+Math.random()*2)+"px";
-    star.style.height=star.style.width;
-    star.style.animationDuration=(2+Math.random()*3)+"s";
-    star.style.animationDelay=Math.random()*5+"s";
-    document.body.appendChild(star);
-}
-
-setInterval(()=>createFlower(1),1000);
-function createFlower(amount){
-    for(let i=0;i<amount;i++){
-        const flower=document.createElement("div");
-        flower.className="falling";
-        flower.innerHTML=["🌸","🌷","🌺","💮"][Math.floor(Math.random()*4)];
-        flower.style.left=Math.random()*100+"vw";
-        flower.style.animationDuration=(6+Math.random()*4)+"s";
-        document.body.appendChild(flower);
-        setTimeout(()=>flower.remove(),10000);
-    }
-}
-
-function handleClick(){
-    clickCount++;
-    createFlower(30);
-}
-
-function openGallery(){
-    document.getElementById("gallery-overlay").style.display="flex";
-    currentImageIndex=0;
-    showImage();
-}
-
-function closeGallery(){
-    document.getElementById("gallery-overlay").style.display="none";
-}
-
-const galleryImages=[
+// Gallery images
+const galleryImages = [
     "flower1.png",
     "flower2.png",
     "flower3.png",
     "flower4.png",
     "flower5.png",
-    "flower6.png",
+    "flower6.png"
 ];
+let currentImageIndex = 0;
 
-let currentImageIndex=0;
+// Start overlay
+document.getElementById("start-overlay").addEventListener("click", () => {
+    document.getElementById("start-overlay").style.display = "none";
+    audio = new Audio("love letters.mp3");
+    audio.loop = true;
+    audio.volume = 0;
+    audio.play().then(() => {
+        let vol = 0;
+        const fade = setInterval(() => {
+            if (vol < 0.5) { vol += 0.01; audio.volume = vol; }
+            else clearInterval(fade);
+        }, 100);
+    });
+});
 
-function showImage(){
-    const img=document.getElementById("gallery-image");
-    img.style.opacity=0;
-    setTimeout(()=>{
-        img.src=galleryImages[currentImageIndex];
-        img.style.opacity=1;
-    },200);
+// Card flip
+function flipCard() {
+    cardClickCount++;
+    if (cardClickCount % 2 === 0) {
+        cardMessageIndex = (cardMessageIndex + 1) % cardMessages.length;
+        document.getElementById("card-back").innerHTML = cardMessages[cardMessageIndex];
+    }
+    document.getElementById("card").classList.toggle("flipped");
+    spawnSparkles();
 }
 
-function nextImage(){
-    currentImageIndex=(currentImageIndex+1)%galleryImages.length;
-    showImage();
+// Sparkles effect
+function spawnSparkles() {
+    const card = document.getElementById("card");
+    for (let i = 0; i < 15; i++) {
+        const sparkle = document.createElement("div");
+        sparkle.className = "sparkle";
+        sparkle.style.left = Math.random() * card.offsetWidth + "px";
+        sparkle.style.top = Math.random() * card.offsetHeight + "px";
+        sparkle.style.setProperty("--dx", (Math.random() * 40 - 20) + "px");
+        sparkle.style.setProperty("--dy", (Math.random() * 40 - 20) + "px");
+        card.appendChild(sparkle);
+        setTimeout(() => sparkle.remove(), 1000);
+    }
 }
 
-function prevImage(){
-    currentImageIndex=(currentImageIndex-1+galleryImages.length)%galleryImages.length;
-    showImage();
+// Stars background
+for (let i = 0; i < 80; i++) {
+    const star = document.createElement("div");
+    star.className = "star";
+    star.style.left = Math.random() * 100 + "vw";
+    star.style.top = Math.random() * 100 + "vh";
+    star.style.width = (1 + Math.random() * 2) + "px";
+    star.style.height = star.style.width;
+    star.style.animationDuration = (2 + Math.random() * 3) + "s";
+    star.style.animationDelay = Math.random() * 5 + "s";
+    document.body.appendChild(star);
 }
+
+// Flowers falling
+setInterval(() => createFlower(1), 1000);
+function createFlower(amount) {
+    for (let i = 0; i < amount; i++) {
+        const flower = document.createElement("div");
+        flower.className = "falling";
+        flower.innerHTML = ["🌸", "🌷", "🌺", "💮"][Math.floor(Math.random() * 4)];
+        flower.style.left = Math.random() * 100 + "vw";
+        flower.style.animationDuration = (6 + Math.random() * 4) + "s";
+        document.body.appendChild(flower);
+        setTimeout(() => flower.remove(), 10000);
+    }
+}
+
+// Hearts
+function createHearts(amount) {
+
+    const cuteEmojis = [
+        "❤️",
+        "💖",
+        "💗",
+        "💓",
+        "💞",
+        "💕",
+        "💘",
+        "🌸",
+        "🌷",
+        "✨",
+        "💫"
+    ];
+
+    for (let i = 0; i < amount; i++) {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = (20 + Math.random() * 30) + "px";
+        heart.style.animationDuration = (1 + Math.random() * 2) + "s";
+
+        // Pick random emoji
+        heart.innerText = cuteEmojis[Math.floor(Math.random() * cuteEmojis.length)];
+
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 3000);
+    }
+}
+
+// Messages popup
+function showMessage(msg) {
+    const message = document.createElement("div");
+    message.className = "message";
+    message.innerText = msg;
+    document.body.appendChild(message);
+    setTimeout(() => message.remove(), 3000);
+}
+
+// Storms
+function burstStorm(amount) { createFlower(amount); }
+function megaStorm() {
+    let bursts = 0;
+    const interval = setInterval(() => {
+        createFlower(15);
+        createHearts(5);
+        bursts++;
+
+        if (bursts >= 10) { // runs 10 times
+            clearInterval(interval);
+        }
+    }, 150); // small delay between bursts
+}
+
+// Button click
+function handleClick() {
+    clickCount++;
+    createFlower(30);
+    createHearts(10);
+
+    // Every 5 clicks (including 10 & 20)
+    if (clickCount % 5 === 0) {
+
+        // Show special 10 and 20 messages FIRST
+        if (clickCount === 10) {
+            showMessage("No matter how many times you click… I fall for you all over again 💖✨");
+        } 
+        else if (clickCount === 20) {
+            showMessage("Twenty clicks… and I would still enjoy every moment with you 🌹💫");
+            megaStorm();
+        } 
+        else {
+            // Show five-click messages in sequence
+            showMessage(fiveClickMessages[fiveClickIndex]);
+
+            // Move to next message
+            fiveClickIndex++;
+
+            // Loop back after showing all 10
+            if (fiveClickIndex >= fiveClickMessages.length) {
+                fiveClickIndex = 0;
+            }
+        }
+    }
+
+    // Reset ONLY clickCount, not fiveClickIndex
+    if (clickCount >= 30) {
+        clickCount = 0;
+    }
+}
+
+    // Reset clickCount only
+    if (clickCount >= 30) {
+        clickCount = 0;
+    }
+
+// Gallery
+function openGallery() { document.getElementById("gallery-overlay").style.display = "flex"; currentImageIndex = 0; showImage(); }
+function closeGallery() { document.getElementById("gallery-overlay").style.display = "none"; }
+function showImage() { const img = document.getElementById("gallery-image"); img.style.opacity = 0; setTimeout(() => { img.src = galleryImages[currentImageIndex]; img.style.opacity = 1; }, 200); }
+function nextImage() { currentImageIndex = (currentImageIndex + 1) % galleryImages.length; showImage(); }
+function prevImage() { currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length; showImage(); }
 </script>
 
 </body>
